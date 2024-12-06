@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="{{ asset('js/app.js') }}" defer></script>
     <style>
         /* Global Body Styling */
         body {
-            background-color: #F7FAFC; /* Soft background for better readability */
+            background-color: #F7FAFC;
+            /* Soft background for better readability */
             font-family: 'Nunito', sans-serif;
-            color: #2D3748; /* Dark text for high contrast */
+            color: #2D3748;
+            /* Dark text for high contrast */
             margin: 0;
             padding: 0;
             display: flex;
@@ -22,7 +26,8 @@
         /* Sidebar Styling */
         .sidebar {
             width: 260px;
-            background: linear-gradient(180deg, #4C6EF5, #3B82F6); /* Gradient effect for sidebar */
+            background: linear-gradient(180deg, #c93a3f, #D93338);
+            /* Gradient effect for sidebar */
             color: white;
             position: fixed;
             height: 100%;
@@ -32,7 +37,7 @@
 
         .sidebar:hover {
             width: 300px;
-            background: linear-gradient(180deg, #3B82F6, #4C6EF5);
+            background: linear-gradient(180deg, #c93a3f, #D93338);
         }
 
         .sidebar .logo {
@@ -68,9 +73,11 @@
 
         .sidebar nav a.active,
         .sidebar nav a:hover {
-            background-color: #63B3ED; /* Light blue for hover/active state */
+            background-color: #63B3ED;
+            /* Light blue for hover/active state */
             color: white;
-            transform: translateX(10px); /* Slight move to the right for hover effect */
+            transform: translateX(10px);
+            /* Slight move to the right for hover effect */
             box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
         }
 
@@ -90,7 +97,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
         }
 
-        .sidebar:hover ~ .content {
+        .sidebar:hover~.content {
             margin-left: 300px;
         }
 
@@ -198,6 +205,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -218,7 +226,8 @@
             <a href="{{ route('admin.notifikasi') }}" class="{{ request()->is('admin/notifikasi') ? 'active' : '' }}">
                 <i class="fas fa-bell"></i> Notifikasi
             </a>
-            <a href="{{ route('admin.tempat_sampah') }}" class="{{ request()->is('admin/tempat_sampah') ? 'active' : '' }}">
+            <a href="{{ route('admin.tempat_sampah') }}"
+                class="{{ request()->is('admin/tempat_sampah') ? 'active' : '' }}">
                 <i class="fas fa-trash"></i> Pengaturan Tempat Sampah
             </a>
             <a href="{{ route('admin.pengguna') }}" class="{{ request()->is('admin/pengguna') ? 'active' : '' }}">
@@ -234,8 +243,20 @@
 
         <!-- Main Content -->
         @yield('content')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script>
+            @if (session('success'))
+                toastr.success("{{ session('success') }}");
+            @endif
+
+            @if (session('error'))
+                toastr.error("{{ session('error') }}");
+            @endif
+        </script>
     </div>
 
 
 </body>
+
 </html>

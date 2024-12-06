@@ -6,31 +6,37 @@
     <p class="text-gray-500">Selamat datang, berikut adalah statistik pengelolaan sampah terbaru.</p>
 </div>
 
+<!-- Filter for selecting month -->
+<form method="GET" action="{{ route('admin.dashboard') }}" class="mb-6">
+    <label for="month" class="block text-sm font-medium text-gray-700">Pilih Bulan:</label>
+    <input type="month" id="month" name="month" value="{{ $selectedMonth }}" class="mt-1 block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+    <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md">Tampilkan</button>
+</form>
+
 <!-- Main Layout Grid -->
 <div class="grid grid-cols-2 gap-6">
     <!-- Left Column -->
     <div class="space-y-6">
-        <!-- Weekly Activity Chart -->
+        <!-- Daily Activity Chart -->
         <div class="card bg-white p-5 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
             <h3 class="text-md font-semibold text-gray-700 mb-3">Statistik Sampah Harian (Minggu Ini)</h3>
+            <canvas id="dailyChart"></canvas>
+        </div>
+
+        <!-- Weekly Activity Chart -->
+        <div class="card bg-white p-5 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
+            <h3 class="text-md font-semibold text-gray-700 mb-3">Statistik Sampah Mingguan (Bulan Ini)</h3>
             <canvas id="weeklyChart"></canvas>
         </div>
     </div>
 
     <!-- Right Column -->
     <div class="space-y-6">
-        <!-- Monthly Statistics Chart -->
-        <div class="card bg-white p-5 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
-            <h3 class="text-md font-semibold text-gray-700 mb-3">Statistik Sampah Bulanan (Tahun Ini)</h3>
-            <canvas id="monthlyChart"></canvas>
-        </div>
-
         <!-- Expense Statistics Pie Chart -->
         <div class="card bg-white p-5 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
             <h3 class="text-md font-semibold text-gray-700 mb-3">Kategori Sampah</h3>
             <canvas id="pieChart"></canvas>
         </div>
-
     </div>
 </div>
 
@@ -38,16 +44,16 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// Weekly Bar Chart
-const weeklyData = @json($weeklyData);
-const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
-new Chart(weeklyCtx, {
+// Daily Bar Chart
+const dailyData = @json($dailyData);
+const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+new Chart(dailyCtx, {
     type: 'bar',
     data: {
-        labels: weeklyData.map(data => data.tanggal),
+        labels: dailyData.map(data => data.tanggal),
         datasets: [{
             label: 'Sampah per Hari',
-            data: weeklyData.map(data => data.jumlah),
+            data: dailyData.map(data => data.jumlah),
             backgroundColor: 'rgba(76, 110, 245, 0.8)',
             hoverBackgroundColor: '#5A67D8',
             borderRadius: 8,
@@ -68,16 +74,16 @@ new Chart(weeklyCtx, {
     }
 });
 
-// Monthly Line Chart
-const monthlyData = @json($monthlyData);
-const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
-new Chart(monthlyCtx, {
+// Weekly Line Chart
+const weeklyData = @json($weeklyData);
+const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+new Chart(weeklyCtx, {
     type: 'line',
     data: {
-        labels: monthlyData.map(data => `Bulan ${data.bulan}`),
+        labels: weeklyData.map(data => `Minggu ${data.minggu}`),
         datasets: [{
-            label: 'Sampah per Bulan',
-            data: monthlyData.map(data => data.total),
+            label: 'Sampah per Minggu',
+            data: weeklyData.map(data => data.total),
             borderColor: '#3B82F6',
             backgroundColor: 'rgba(59, 130, 246, 0.15)',
             fill: true,
